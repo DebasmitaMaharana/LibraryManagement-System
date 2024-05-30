@@ -1,8 +1,10 @@
 package com.boot.lms.LibraryManagement.controllerImp;
 
+import com.boot.lms.LibraryManagement.Exception.UserNotFoundException;
 import com.boot.lms.LibraryManagement.Service.BooksRegistrationService;
 import com.boot.lms.LibraryManagement.controller.BooksRegistrationController;
 import com.boot.lms.LibraryManagement.objects.BooksRegistration_Request;
+import com.boot.lms.LibraryManagement.objects.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +33,23 @@ public class BooksRegistrationController_Imp implements BooksRegistrationControl
     @Override
     public BooksRegistration_Request getBooksRegistrationById(@PathVariable int registrationId) {
 
-        return booksRegistrationService.getBooksById(registrationId);
+        BooksRegistration_Request booksRegistration_request= booksRegistrationService.getBooksById(registrationId);
+
+        if (booksRegistration_request == null)
+            throw new UserNotFoundException("BookRegistration id not found-" + registrationId);
+        return booksRegistration_request;
     }
 
     @Override
     public String deleteABookRegistration(@PathVariable int registrationId) {
+//        booksRegistrationService.deleteBook(registrationId);
+//        return "data deleted successfully for id" + registrationId;
+
+        BooksRegistration_Request booksRegistration_request = booksRegistrationService.getBooksById(registrationId);
+        if (booksRegistration_request == null)
+            throw new RuntimeException("BookRegistration id not found" + registrationId);
         booksRegistrationService.deleteBook(registrationId);
-        return "data deleted successfully for id" + registrationId;
+        return "deleted BookRegistration id- " + registrationId;
 
     }
 

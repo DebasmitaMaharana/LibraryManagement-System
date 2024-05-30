@@ -15,5 +15,5 @@ public interface BooksTransactionController {
     BooksTransaction_Request getTransactionById(@PathVariable int id);
 
     @DeleteMapping("/{id}")
-    void deleteTransaction(@PathVariable int id);
+    String deleteTransaction(@PathVariable int id);
 }
